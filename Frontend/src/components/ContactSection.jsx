@@ -17,7 +17,7 @@ const ContactSection = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmitMessage = (e) => {
     e.preventDefault();
 
     setIsSubmitting(true);
@@ -31,7 +31,49 @@ const ContactSection = () => {
     }, 1500);
 
 
-  }
+  };
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: ""
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const res = await fetch("/api/messages/send", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        // alert("Message sent successfully ✅");
+        setFormData({ name: "", email: "", message: "" }); // Clear form
+      } else {
+        alert("Failed to send message ❌");
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+      alert("Server error ❌");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <section id="contact" className="py-24 px-4 relative bg-secondary/30">
       <div className="container mx-auto max-w-5xl">
@@ -108,9 +150,9 @@ const ContactSection = () => {
               </div>
             </div>
           </div>
-          <div className="bg-card p-8 rounded-lg shadow-xs" onSubmit={handleSubmit}>
+          <div className="bg-card p-8 rounded-lg shadow-xs" onSubmit={handleSubmitMessage}>
             <h3 className="text-2xl font-semibold mb-6">Send a message</h3>
-            <form action="" className="space-y-6">
+            <form action="" className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="name"
@@ -122,6 +164,8 @@ const ContactSection = () => {
                   type="text"
                   name="name"
                   id="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-hidden focus:ring-2 focus:ring-primary"
                   placeholder="Jhon Doe"
@@ -138,6 +182,8 @@ const ContactSection = () => {
                   type="email"
                   name="email"
                   id="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-hidden focus:ring-2 focus:ring-primary"
                   placeholder="example@email.com"
@@ -155,6 +201,8 @@ const ContactSection = () => {
                   name="message"
                   id="message"
                   rows={3}
+                  value={formData.message}
+                  onChange={handleChange}
                   required
                   className="w-full px-4 py-3 rounded-md border border-input bg-background focus:outline-hidden focus:ring-2 focus:ring-primary resize-none"
                   placeholder="Write Sometihing here..."

@@ -1,5 +1,6 @@
-import { Briefcase, Code, User, User2 } from "lucide-react";
+import { Briefcase, Code, User, Download } from "lucide-react";
 import React from "react";
+
 
 const AboutSection = () => {
   return (
@@ -39,13 +40,14 @@ const AboutSection = () => {
                 Get In Touch
               </a>
               <a
-                href=""
-                className="px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300"
+                href="/SUDIPTA_GHOSH_JU.pdf"
+                download
+                className="flex items-center gap-2 px-6 py-2 rounded-full border border-primary text-primary hover:bg-primary/10 transition-colors duration-300"
               >
+                <Download size={18} />
                 Download CV
-                "TODO"
-                
               </a>
+
             </div>
           </div>
           <div className="grid grid-cols-1 gap-6">
