@@ -51,13 +51,14 @@ const ContactSection = () => {
     setIsSubmitting(true);
 
     try {
-    const res = await fetch("https://portfolio-backend.onrender.com/api/messages/send", {
+      const res = await fetch("https://beautiful-portfolio-monorepo.onrender.com/api/messages/send", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData)
       });
+
 
       const data = await res.json();
 
